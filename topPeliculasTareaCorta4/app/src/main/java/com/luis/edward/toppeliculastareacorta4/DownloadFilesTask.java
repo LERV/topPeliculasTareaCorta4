@@ -16,28 +16,41 @@ import java.net.URLConnection;
  */
 
 public class DownloadFilesTask extends AsyncTask<String, Void, String> {
+    String paginaHtml="NADADA----";
+
     @Override
-    protected String doInBackground(String... urls)
+    protected String doInBackground(String... urls)//Recibir un array de parametros
     {
-        String paginaHtml="NADADA----";
+
+        Log.d("---TRY","Va a entrar al");
         try
         {
             // Build and set timeout values for the request.
-            URLConnection connection = (new URL("https://www.botanical-online.com/tiposdetuberculos.htm")).openConnection();
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            connection.connect();
+
+            Log.d("---RECIBIDO","String recibido fue"+urls[0]);
+            URL direccion= new URL("https://www.imdb.com/list/ls064079588/");
+            URLConnection connection = (direccion).openConnection();
+            //connection.setConnectTimeout(5000);
+            //connection.setReadTimeout(5000);
+            //connection.connect();
 
             // Read and store the result line by line then return the entire string.
             InputStream in = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            StringBuilder html = new StringBuilder();
-            for (String line; (line = reader.readLine()) != null; ) {
-                html.append(line);
+            //BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            //StringBuilder html = new StringBuilder();
+            InputStreamReader inputStreamReader=new InputStreamReader(in);
+            int data=inputStreamReader.read();
+            while (data!=-1) {
+                char current =(char)data;
+                paginaHtml+=current;
+                data=inputStreamReader.read();
+
+                Log.d("ALTO----","Se esta leyendo esto: "+paginaHtml);
             }
             in.close();
+            return paginaHtml;
+           // paginaHtml=html.toString();
 
-            paginaHtml=html.toString();
 
         }
 
@@ -49,5 +62,23 @@ public class DownloadFilesTask extends AsyncTask<String, Void, String> {
         }
         return paginaHtml;
     }
-}
+    // This runs in UI when background thread finishes
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+
+        // Do things like hide the progress bar or change a TextView
+
+    }
+    }
+
+
+
+
+
+
+
+
+
+
 

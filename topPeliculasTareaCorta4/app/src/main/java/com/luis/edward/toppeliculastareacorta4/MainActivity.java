@@ -17,9 +17,10 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity {
-    String htmles;
+    String htmlTexto;
     TextView prueba;
-    public void prueba(View view)
+    DownloadFilesTask tarea;
+    /*public void prueba(View view)
     {
         URL url;
         HttpURLConnection urlConnection = null;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         prueba.setText("fadsfsd");
 
 
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +63,62 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         prueba=findViewById(R.id.Textprueba);
 
-        //String htmles=new DownloadFilesTask().doInBackground();
-         htmles="dad";
-        prueba.setText(htmles);
+        tarea=new DownloadFilesTask();
+        tarea.execute("YA CASI VA A CORRRER");
+
 
     }
 
+    public void imprimir(View view)
+    {
+        htmlTexto="dad";
+        htmlTexto=tarea.paginaHtml;
+        prueba.setText(htmlTexto);
+    }
+
 }
+
+
+
+
+
+
+// The definition of our task class
+ class PostTask extends AsyncTask<String, Integer, String> {
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        //displayProgressBar("Downloading...");
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+        String url=params[0];
+
+        // Dummy code
+        for (int i = 0; i <= 100; i += 5) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            publishProgress(i);
+        }
+        return "All Done!";
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        //updateProgressBar(values[0]);
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        //     dismissProgressBar();
+    }
+}
+
+
 
